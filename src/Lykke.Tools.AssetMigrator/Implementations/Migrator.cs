@@ -144,9 +144,6 @@ namespace Lykke.Tools.AssetMigrator.Implementations
                     }
 
                     _logger.LogInformation($"Completed {i + 1} of {balances.Count} migrations");
-
-                    break;
-
                 }
                 catch (Exception e)
                 {
