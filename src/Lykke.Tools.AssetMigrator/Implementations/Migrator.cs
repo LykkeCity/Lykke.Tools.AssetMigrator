@@ -74,7 +74,7 @@ namespace Lykke.Tools.AssetMigrator.Implementations
         {
             var meClient = new TcpMatchingEngineClient(_options.MEEndPoint, EmptyLogFactory.Instance);
             var migrationsRepository = new MigrationsRepository(_options.BalancesConncectionString, _options.MigrationId);
-            var operationsRepository = new CashOperationsRepositoryClient(_options.OperationsUrl, EmptyLogFactory.Instance.CreateLog(this), 60);
+            var operationsRepository = new CashOperationsRepositoryClient(_options.OperationsUrl, EmptyLogFactory.Instance.CreateLog(this), 600);
             
             meClient.Start();
             
@@ -99,17 +99,24 @@ namespace Lykke.Tools.AssetMigrator.Implementations
 
                     if (cashInResult.Status == MeStatusCodes.Ok || cashInResult.Status == MeStatusCodes.Duplicate)
                     {
-                        await operationsRepository.RegisterAsync(new CashInOutOperation
-                        {
-                            Amount = cashinAmount,
-                            AssetId = _options.TargetAssetId,
-                            ClientId = balance.ClientId,
-                            DateTime = DateTime.UtcNow,
-                            Id = cashInId.ToString(),
+                        var operationId = cashInId.ToString();
 
-                            Type = CashOperationType.None,
-                            State = TransactionStates.SettledOffchain
-                        });
+                        if (await operationsRepository.GetAsync(balance.ClientId, operationId) == null)
+                        {
+                            await operationsRepository.RegisterAsync(new CashInOutOperation
+                            {
+                                Amount = cashinAmount,
+                                AssetId = _options.TargetAssetId,
+                                ClientId = balance.ClientId,
+                                DateTime = DateTime.UtcNow,
+                                Id = operationId,
+                                TransactionId = operationId,
+                                BlockChainHash = "0x",
+
+                                Type = CashOperationType.None,
+                                State = TransactionStates.SettledOffchain
+                            });
+                        }
                     }
                     else
                     {
@@ -126,17 +133,24 @@ namespace Lykke.Tools.AssetMigrator.Implementations
 
                     if (cashOutResult.Status == MeStatusCodes.Ok || cashOutResult.Status == MeStatusCodes.Duplicate)
                     {
-                        await operationsRepository.RegisterAsync(new CashInOutOperation
-                        {
-                            Amount = cashOutAmount,
-                            AssetId = _options.SourceAssetId,
-                            ClientId = balance.ClientId,
-                            DateTime = DateTime.UtcNow,
-                            Id = cashOutId.ToString(),
+                        var operationId = cashOutId.ToString();
 
-                            Type = CashOperationType.None,
-                            State = TransactionStates.SettledOffchain
-                        });
+                        if (await operationsRepository.GetAsync(balance.ClientId, operationId) == null)
+                        {
+                            await operationsRepository.RegisterAsync(new CashInOutOperation
+                            {
+                                Amount = cashOutAmount,
+                                AssetId = _options.SourceAssetId,
+                                ClientId = balance.ClientId,
+                                DateTime = DateTime.UtcNow,
+                                Id = operationId,
+                                TransactionId = operationId,
+                                BlockChainHash = "0x",
+
+                                Type = CashOperationType.None,
+                                State = TransactionStates.SettledOffchain
+                            });
+                        }
                     }
                     else
                     {

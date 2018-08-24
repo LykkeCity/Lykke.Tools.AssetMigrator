@@ -58,8 +58,6 @@ namespace Lykke.Tools.AssetMigrator.Implementations
             {
                 _log.LogCritical(e, "Migration failed.");
 
-                await Task.Delay(1000);
-                
                 return 1;
             }
         }

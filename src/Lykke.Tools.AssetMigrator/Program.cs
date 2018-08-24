@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Lykke.Tools.AssetMigrator.Implementations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -9,8 +10,10 @@ namespace Lykke.Tools.AssetMigrator
     internal static class Program
     {
         
-        private static int Main(string[] args)
+        private static async Task<int> Main(string[] args)
         {
+            var resultCode = 0;
+            
             try
             {
                 var services = ConfigureServices();
@@ -18,14 +21,19 @@ namespace Lykke.Tools.AssetMigrator
                 var rootCommand = serviceProvider.GetService<IRootCommand>();
                 var app = rootCommand.Configure();
 
-                return app.Execute(args);
+                resultCode = app.Execute(args);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
 
-                return 1;
+                resultCode = 1;
             }
+
+            // Flushing logger
+            await Task.Delay(100);
+
+            return resultCode;
         }
 
         private static IServiceCollection ConfigureServices()
