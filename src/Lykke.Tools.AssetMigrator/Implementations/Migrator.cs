@@ -134,7 +134,7 @@ namespace Lykke.Tools.AssetMigrator.Implementations
                                 DateTime = DateTime.UtcNow,
                                 Id = operationId,
                                 TransactionId = operationId,
-                                BlockChainHash = "0x",
+                                BlockChainHash = _options.MigrationMessage,
 
                                 Type = CashOperationType.None,
                                 State = TransactionStates.SettledOffchain
@@ -168,7 +168,7 @@ namespace Lykke.Tools.AssetMigrator.Implementations
                                 DateTime = DateTime.UtcNow,
                                 Id = operationId,
                                 TransactionId = operationId,
-                                BlockChainHash = "0x",
+                                BlockChainHash = _options.MigrationMessage,
 
                                 Type = CashOperationType.None,
                                 State = TransactionStates.SettledOffchain

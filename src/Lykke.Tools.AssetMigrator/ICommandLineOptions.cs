@@ -15,6 +15,8 @@ namespace Lykke.Tools.AssetMigrator
         
         Guid MigrationId { get; }
         
+        string MigrationMessage { get; }
+        
         uint Multiplier { get; }
 
         string OperationsUrl { get; }
