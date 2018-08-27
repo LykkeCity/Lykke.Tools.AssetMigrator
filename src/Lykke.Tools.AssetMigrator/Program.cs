@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using Lykke.Logs;
 using Lykke.Logs.Loggers.LykkeConsole;
 using Lykke.Tools.AssetMigrator.Implementations;
@@ -11,7 +10,7 @@ namespace Lykke.Tools.AssetMigrator
     internal static class Program
     {
         
-        private static async Task<int> Main(string[] args)
+        private static int Main(string[] args)
         {
             int resultCode;
             ServiceProvider serviceProvider = null;
