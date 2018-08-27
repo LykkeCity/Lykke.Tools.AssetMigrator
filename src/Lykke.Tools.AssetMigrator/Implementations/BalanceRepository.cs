@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using AzureStorage;
 using AzureStorage.Tables;
-using Lykke.Logs;
+using Lykke.Common.Log;
 using Lykke.SettingsReader.ReloadingManager;
 using Microsoft.WindowsAzure.Storage.Table;
 
@@ -14,15 +14,14 @@ namespace Lykke.Tools.AssetMigrator.Implementations
         private readonly INoSQLTableStorage<BalanceEntity> _balances;
 
         public BalanceRepository(
-            string connectionString)
+            string connectionString,
+            ILogFactory logFactory)
         {
-            
-            
             _balances = AzureTableStorage<BalanceEntity>.Create
             (
                 connectionStringManager: ConstantReloadingManager.From(connectionString),
                 tableName: "Balances",
-                logFactory: EmptyLogFactory.Instance
+                logFactory: logFactory
             );
         }
 

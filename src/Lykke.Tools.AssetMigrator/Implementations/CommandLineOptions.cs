@@ -12,7 +12,7 @@ namespace Lykke.Tools.AssetMigrator.Implementations
     {
         private bool _optionsConfigured;
         
-        private CommandOption _balancesConncectionString;
+        private CommandOption _balancesConnectionString;
         private CommandOption _help;
         private CommandOption _meEndPoint;
         private CommandOption _migrationId;
@@ -23,8 +23,8 @@ namespace Lykke.Tools.AssetMigrator.Implementations
         private CommandOption _targetAssetId;
 
 
-        public string BalancesConncectionString
-            => _balancesConncectionString.Value();
+        public string BalancesConnectionString
+            => _balancesConnectionString.Value();
 
         public bool ShowHelp
             => _help.HasValue();
@@ -54,10 +54,10 @@ namespace Lykke.Tools.AssetMigrator.Implementations
         public void Configure(
             CommandLineApplication app)
         {
-            _balancesConncectionString = app.Option
+            _balancesConnectionString = app.Option
             (
                 "--balances-conn-string",
-                "Lykke.Service.Balances conncection string",
+                "Lykke.Service.Balances connection string",
                 CommandOptionType.SingleValue
             );
             
@@ -127,7 +127,7 @@ namespace Lykke.Tools.AssetMigrator.Implementations
 
             var optionsAreValid = true;
             
-            if (!_balancesConncectionString.HasValue())
+            if (!_balancesConnectionString.HasValue())
             {
                 Console.WriteLine("Balances connection string is not provided");
                 

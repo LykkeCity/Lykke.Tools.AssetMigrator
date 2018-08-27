@@ -7,7 +7,7 @@ namespace Lykke.Tools.AssetMigrator
 {
     public interface ICommandLineOptions
     {
-        string BalancesConncectionString { get; }
+        string BalancesConnectionString { get; }
         
         bool ShowHelp { get; }
         
