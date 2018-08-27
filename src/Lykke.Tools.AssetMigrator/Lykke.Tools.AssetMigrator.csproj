@@ -12,6 +12,7 @@
     <PackageReference Include="Lykke.Logs" Version="5.2.0" />
     <PackageReference Include="Lykke.MatchingEngineConnector" Version="7.4.0" />
     <PackageReference Include="Lykke.Service.OperationsRepository.Client" Version="1.0.98" />
+    <PackageReference Include="Lykke.SettingsReader" Version="4.0.1" />
     <PackageReference Include="Microsoft.Extensions.CommandLineUtils" Version="1.1.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.1.1" />

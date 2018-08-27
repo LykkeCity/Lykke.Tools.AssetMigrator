@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AzureStorage;
 using AzureStorage.Tables;
 using Lykke.Logs;
+using Lykke.SettingsReader.ReloadingManager;
 
 namespace Lykke.Tools.AssetMigrator.Implementations
 {
@@ -17,7 +18,7 @@ namespace Lykke.Tools.AssetMigrator.Implementations
         {
             _migrations = AzureTableStorage<MigrationEntity>.Create
             (
-                connectionStringManager: new ConnectionStringManager(connectionString),
+                connectionStringManager: ConstantReloadingManager.From(connectionString),
                 tableName: $"BalanceMigrationsX{migrationId:N}",
                 logFactory: EmptyLogFactory.Instance
             );
