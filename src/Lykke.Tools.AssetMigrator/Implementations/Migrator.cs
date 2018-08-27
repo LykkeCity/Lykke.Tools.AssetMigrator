@@ -72,6 +72,8 @@ namespace Lykke.Tools.AssetMigrator.Implementations
                 );
                 
                 balances.AddRange(balancesBatch);
+                
+                _log.Info($"Got {balances.Count} balances to migrate");
 
             } while (continuationToken != null);
 
