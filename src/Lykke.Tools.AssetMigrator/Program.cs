@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Lykke.Common.Log;
 using Lykke.Logs;
 using Lykke.Logs.Loggers.LykkeConsole;
 using Lykke.Tools.AssetMigrator.Implementations;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 
 namespace Lykke.Tools.AssetMigrator
@@ -15,7 +13,7 @@ namespace Lykke.Tools.AssetMigrator
         
         private static async Task<int> Main(string[] args)
         {
-            var resultCode = 0;
+            int resultCode;
             
             try
             {

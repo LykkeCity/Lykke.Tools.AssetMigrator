@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Net;
-using System.Threading.Tasks;
 using Microsoft.Extensions.CommandLineUtils;
 
 namespace Lykke.Tools.AssetMigrator
@@ -31,6 +30,6 @@ namespace Lykke.Tools.AssetMigrator
         void Configure(
             CommandLineApplication app);
 
-        Task<bool> ValidateAsync();
+        bool Validate();
     }
 }

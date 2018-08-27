@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Net;
-using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.Extensions.CommandLineUtils;
 
@@ -129,7 +128,7 @@ namespace Lykke.Tools.AssetMigrator.Implementations
             _optionsConfigured = true;
         }
 
-        public async Task<bool> ValidateAsync()
+        public bool Validate()
         {
             if (!_optionsConfigured)
             {

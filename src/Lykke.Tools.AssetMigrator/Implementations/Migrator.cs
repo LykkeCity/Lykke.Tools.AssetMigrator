@@ -11,8 +11,6 @@ using Lykke.MatchingEngine.Connector.Models.Api;
 using Lykke.MatchingEngine.Connector.Services;
 using Lykke.Service.OperationsRepository.AutorestClient.Models;
 using Lykke.Service.OperationsRepository.Client.CashOperations;
-using Microsoft.Extensions.Logging;
-
 
 
 namespace Lykke.Tools.AssetMigrator.Implementations
@@ -41,7 +39,7 @@ namespace Lykke.Tools.AssetMigrator.Implementations
             
             var balances = await GetBalancesAsync();
             
-            _log.Info($"{balances.Length} balances found");
+            _log.Info($"Migrating {balances.Length} balances...");
 
             await MigrateAsync(balances);
             

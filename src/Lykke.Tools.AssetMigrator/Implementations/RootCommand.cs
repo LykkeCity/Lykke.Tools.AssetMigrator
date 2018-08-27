@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Reflection;
 using System.Threading.Tasks;
+using Common.Log;
 using JetBrains.Annotations;
+using Lykke.Common.Log;
 using Microsoft.Extensions.CommandLineUtils;
-using Microsoft.Extensions.Logging;
 
 namespace Lykke.Tools.AssetMigrator.Implementations
 {
@@ -11,18 +12,18 @@ namespace Lykke.Tools.AssetMigrator.Implementations
     public sealed class RootCommand : IRootCommand
     {
         private readonly CommandLineApplication _app;
-        private readonly ILogger<IRootCommand> _log;
+        private readonly ILog _log;
         private readonly IMigrator _migrator;
         private readonly ICommandLineOptions _options;
 
         
         public RootCommand(
-            ILogger<IRootCommand> log,
+            ILogFactory logFactory,
             IMigrator migrator,
             ICommandLineOptions options)
         {
             _app = new CommandLineApplication(throwOnUnexpectedArg: false);
-            _log = log;
+            _log = logFactory.CreateLog(this);
             _migrator = migrator;
             _options = options;
         }
@@ -43,7 +44,7 @@ namespace Lykke.Tools.AssetMigrator.Implementations
         {
             try
             {
-                if (_options.ShowHelp || !await _options.ValidateAsync())
+                if (_options.ShowHelp || !_options.Validate())
                 {
                     _app.ShowHelp();
                 }
@@ -56,7 +57,7 @@ namespace Lykke.Tools.AssetMigrator.Implementations
             }
             catch (Exception e)
             {
-                _log.LogCritical(e, "Migration failed.");
+                _log.Critical(e, "Migration failed.");
 
                 return 1;
             }

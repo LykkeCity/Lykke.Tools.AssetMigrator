@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using AzureStorage;
 using AzureStorage.Tables;
 using Lykke.Common.Log;
-using Lykke.Logs;
 using Lykke.SettingsReader.ReloadingManager;
 
 namespace Lykke.Tools.AssetMigrator.Implementations
