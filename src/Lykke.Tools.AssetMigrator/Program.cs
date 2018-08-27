@@ -14,11 +14,12 @@ namespace Lykke.Tools.AssetMigrator
         private static async Task<int> Main(string[] args)
         {
             int resultCode;
-            
+            ServiceProvider serviceProvider = null;
+
             try
             {
-                var services = ConfigureServices();
-                var serviceProvider = services.BuildServiceProvider();
+                serviceProvider = ConfigureServices().BuildServiceProvider();
+                
                 var rootCommand = serviceProvider.GetService<IRootCommand>();
                 var app = rootCommand.Configure();
 
@@ -30,9 +31,8 @@ namespace Lykke.Tools.AssetMigrator
 
                 resultCode = 1;
             }
-
-            // Flushing logger
-            await Task.Delay(100);
+            
+            serviceProvider?.Dispose();
 
             return resultCode;
         }
