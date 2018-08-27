@@ -120,7 +120,7 @@ namespace Lykke.Tools.AssetMigrator.Implementations
                     }
                     else
                     {
-                        _logger.LogWarning($"CashIn completed with [{cashInResult.Status.ToString()}] status");
+                        _logger.LogWarning($"CashIn for client [{balance.ClientId}] completed with [{cashInResult.Status.ToString()}] status");
                     }
 
                     var cashOutResult = await meClient.CashInOutAsync
@@ -154,7 +154,7 @@ namespace Lykke.Tools.AssetMigrator.Implementations
                     }
                     else
                     {
-                        _logger.LogWarning($"CashOut cimpleted with [{cashInResult.Status.ToString()}] status");
+                        _logger.LogWarning($"CashOut completed for client {balance.ClientId} with [{cashInResult.Status.ToString()}] status");
                     }
 
                     _logger.LogInformation($"Completed {i + 1} of {balances.Count} migrations");
