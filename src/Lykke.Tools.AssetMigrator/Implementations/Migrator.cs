@@ -175,7 +175,7 @@ namespace Lykke.Tools.AssetMigrator.Implementations
                     }
                     else
                     {
-                        _log.Warning($"CashOut completed for client {balance.ClientId} with [{cashInResult.Status.ToString()}] status");
+                        _log.Warning($"CashOut completed for client {balance.ClientId} with [{cashOutResult.Status.ToString()}] status");
                     }
 
                     _log.Info($"Completed {i + 1} of {balances.Count} migrations");
