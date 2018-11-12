@@ -20,13 +20,16 @@ namespace Lykke.Tools.AssetMigrator.Implementations
     {
         private readonly ILog _log;
         private readonly ILogFactory _logFactory;
+        private readonly ICommandLineArguments _arguments;
         private readonly ICommandLineOptions _options;
 
         
         public Migrator(
+            ICommandLineArguments arguments,
             ILogFactory logFactory,
             ICommandLineOptions options)
         {
+            _arguments = arguments;
             _log = logFactory.CreateLog(this);
             _logFactory = logFactory;
             _options = options;
@@ -38,10 +41,20 @@ namespace Lykke.Tools.AssetMigrator.Implementations
             _log.Info("Migration started");
             
             var balances = await GetBalancesAsync();
-            
-            _log.Info($"Migrating {balances.Length} balances...");
 
-            await MigrateAsync(balances);
+            _log.Info($"Migrating {balances.Length} balances...");
+            
+            switch (_arguments.Mode)
+            {
+                case MigrationMode.Copy:
+                    await CopyAsync(balances);
+                    break;
+                case MigrationMode.Transfer:
+                    await TransferAsync(balances);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException($"Migration mode [{_arguments.Mode.ToString()}] is not supported.");
+            }
             
             _log.Info("Migration completed");
         }
@@ -78,7 +91,80 @@ namespace Lykke.Tools.AssetMigrator.Implementations
             return balances.Where(x => x.Balance > 0).ToArray();
         }
 
-        private async Task MigrateAsync(
+        private async Task CopyAsync(
+            IReadOnlyList<BalanceEntity> balances)
+        {            
+            var meClient = new TcpMatchingEngineClient(_options.MEEndPoint, EmptyLogFactory.Instance);
+            
+            var migrationsRepository = new MigrationsRepository
+            (
+                _options.BalancesConnectionString,
+                _logFactory,
+                _options.MigrationId
+            );
+            
+            var operationsRepository = new CashOperationsRepositoryClient
+            (
+                _options.OperationsUrl,
+                _logFactory.CreateLog(this),
+                600
+            );
+            
+            meClient.Start();
+
+            for (var i = 0; i < balances.Count; i++)
+            {
+                var balance = balances[i];
+
+                try
+                {
+                    var cashInId = await migrationsRepository.GetOrCreateCashInOutIdAsync(balance.ClientId, _options.TargetAssetId);
+                    var cashInAmount = ((double) balance.Balance * _options.Multiplier).TruncateDecimalPlaces((int) _options.TargetAssetAccuracy);
+                
+                    var cashInResult = await meClient.CashInOutAsync
+                    (
+                        id: cashInId.ToString(),
+                        clientId: balance.ClientId,
+                        assetId: _options.TargetAssetId,
+                        amount: cashInAmount
+                    );
+                
+                    if (cashInResult.Status == MeStatusCodes.Ok || cashInResult.Status == MeStatusCodes.Duplicate)
+                    {
+                        var operationId = cashInId.ToString();
+
+                        if (await operationsRepository.GetAsync(balance.ClientId, operationId) == null)
+                        {
+                            await operationsRepository.RegisterAsync(new CashInOutOperation
+                            {
+                                Amount = cashInAmount,
+                                AssetId = _options.TargetAssetId,
+                                ClientId = balance.ClientId,
+                                DateTime = DateTime.UtcNow,
+                                Id = operationId,
+                                TransactionId = operationId,
+                                BlockChainHash = _options.MigrationMessage,
+
+                                Type = CashOperationType.None,
+                                State = TransactionStates.SettledOffchain
+                            });
+                        }
+                    }
+                    else
+                    {
+                        _log.Warning($"CashIn for client [{balance.ClientId}] completed with [{cashInResult.Status.ToString()}] status");
+                    }
+                    
+                    _log.Info($"Copied {i + 1} of {balances.Count} balances.");
+                }
+                catch (Exception e)
+                {
+                    _log.Error(e, $"Failed to copy balance for client [{balance.ClientId}]");
+                }
+            }
+        }
+        
+        private async Task TransferAsync(
             IReadOnlyList<BalanceEntity> balances)
         {
             var meClient = new TcpMatchingEngineClient(_options.MEEndPoint, EmptyLogFactory.Instance);
@@ -178,11 +264,11 @@ namespace Lykke.Tools.AssetMigrator.Implementations
                         _log.Warning($"CashOut completed for client {balance.ClientId} with [{cashOutResult.Status.ToString()}] status");
                     }
 
-                    _log.Info($"Completed {i + 1} of {balances.Count} migrations");
+                    _log.Info($"Completed {i + 1} of {balances.Count} transfers");
                 }
                 catch (Exception e)
                 {
-                    _log.Error(e, $"Failed to migrate balance for client [{balance.ClientId}]");
+                    _log.Error(e, $"Failed to transfer balance for client [{balance.ClientId}]");
                 }
             }
         }

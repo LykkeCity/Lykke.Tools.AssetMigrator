@@ -12,17 +12,20 @@ namespace Lykke.Tools.AssetMigrator.Implementations
     public sealed class RootCommand : IRootCommand
     {
         private readonly CommandLineApplication _app;
+        private readonly ICommandLineArguments _arguments;
         private readonly ILog _log;
         private readonly IMigrator _migrator;
         private readonly ICommandLineOptions _options;
 
         
         public RootCommand(
+            ICommandLineArguments arguments,
             ILogFactory logFactory,
             IMigrator migrator,
             ICommandLineOptions options)
         {
             _app = new CommandLineApplication(throwOnUnexpectedArg: false);
+            _arguments = arguments;
             _log = logFactory.CreateLog(this);
             _migrator = migrator;
             _options = options;
@@ -31,6 +34,7 @@ namespace Lykke.Tools.AssetMigrator.Implementations
 
         public CommandLineApplication Configure()
         {
+            _arguments.Configure(_app);
             _options.Configure(_app);
 
             _app.OnExecute(() => ExecuteAsync());
@@ -44,7 +48,7 @@ namespace Lykke.Tools.AssetMigrator.Implementations
         {
             try
             {
-                if (_options.ShowHelp || !_options.Validate())
+                if (_options.ShowHelp || !_arguments.Validate() || !_options.Validate())
                 {
                     _app.ShowHelp();
                 }
