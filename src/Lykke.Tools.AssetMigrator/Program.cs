@@ -49,6 +49,9 @@ namespace Lykke.Tools.AssetMigrator
                 );
 
             serviceCollection
+                .AddSingleton<ICommandLineArguments, CommandLineArguments>();
+            
+            serviceCollection
                 .AddSingleton<ICommandLineOptions, CommandLineOptions>();
             
             serviceCollection
