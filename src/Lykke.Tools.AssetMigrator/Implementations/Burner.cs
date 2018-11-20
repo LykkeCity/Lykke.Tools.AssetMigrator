@@ -10,6 +10,7 @@ namespace Lykke.Tools.AssetMigrator.Implementations
     public class Burner : IBurner
     {
         private readonly ILog _log;
+        private readonly ILogFactory _logFactory;
         private readonly IBurnOptions _options;
 
         public Burner(
@@ -17,6 +18,7 @@ namespace Lykke.Tools.AssetMigrator.Implementations
             ILogFactory logFactory)
         {
             _log = logFactory.CreateLog(this);
+            _logFactory = logFactory;
             _options = options;
         }
 
@@ -25,7 +27,7 @@ namespace Lykke.Tools.AssetMigrator.Implementations
         {
             _log.Info("Balance burning started");
             
-            var meClient = new TcpMatchingEngineClient(_options.MEEndPoint, EmptyLogFactory.Instance);
+            var meClient = new TcpMatchingEngineClient(_options.MEEndPoint, _logFactory);
 
             meClient.Start();
             
