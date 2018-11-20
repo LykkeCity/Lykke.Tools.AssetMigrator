@@ -27,6 +27,8 @@ namespace Lykke.Tools.AssetMigrator.Implementations
             
             var meClient = new TcpMatchingEngineClient(_options.MEEndPoint, EmptyLogFactory.Instance);
 
+            meClient.Start();
+            
             await meClient.UpdateBalanceAsync
             (
                 id: Guid.NewGuid().ToString(),
