@@ -11,7 +11,7 @@
 
 **Commands:**
 
-> burn      
+> burn-balance      
 > copy      
 > transfer  
 

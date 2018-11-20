@@ -23,7 +23,7 @@ namespace Lykke.Tools.AssetMigrator.Implementations
         
         public async Task RunAsync()
         {
-            _log.Info("Burn started");
+            _log.Info("Balance burning started");
             
             var meClient = new TcpMatchingEngineClient(_options.MEEndPoint, EmptyLogFactory.Instance);
 
@@ -35,7 +35,7 @@ namespace Lykke.Tools.AssetMigrator.Implementations
                 value: 0
             );
             
-            _log.Info("Burn completed");
+            _log.Info("Balance burning completed");
         }
     }
 }

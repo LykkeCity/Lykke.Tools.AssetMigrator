@@ -27,7 +27,7 @@ namespace Lykke.Tools.AssetMigrator.Implementations
         public void Configure(
             CommandLineApplication app)
         {
-            app.Command("burn", cmd =>
+            app.Command("burn-balance", cmd =>
             {
                 _options.Configure(cmd);
                 
@@ -53,7 +53,7 @@ namespace Lykke.Tools.AssetMigrator.Implementations
             }
             catch (Exception e)
             {
-                _log.Critical(e, "Burn failed.");
+                _log.Critical(e, "Balance burning failed.");
                 
                 return 1;
             }
