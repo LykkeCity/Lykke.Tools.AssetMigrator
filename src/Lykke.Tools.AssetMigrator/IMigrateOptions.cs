@@ -1,14 +1,12 @@
-﻿using System;
+using System;
 using System.Net;
 using Microsoft.Extensions.CommandLineUtils;
 
 namespace Lykke.Tools.AssetMigrator
 {
-    public interface ICommandLineOptions
+    public interface IMigrateOptions
     {
         string BalancesConnectionString { get; }
-        
-        bool ShowHelp { get; }
         
         IPEndPoint MEEndPoint { get; }
         
@@ -19,6 +17,8 @@ namespace Lykke.Tools.AssetMigrator
         uint Multiplier { get; }
 
         string OperationsUrl { get; }
+        
+        bool ShowHelp { get; }
         
         string SourceAssetId { get; }
 

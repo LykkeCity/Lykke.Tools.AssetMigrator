@@ -7,7 +7,7 @@ using Microsoft.Extensions.CommandLineUtils;
 namespace Lykke.Tools.AssetMigrator.Implementations
 {
     [UsedImplicitly]
-    public sealed class CommandLineOptions : ICommandLineOptions
+    public sealed class MigrateOptions : IMigrateOptions
     {
         private bool _optionsConfigured;
         

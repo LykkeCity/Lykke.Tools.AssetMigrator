@@ -1,8 +1,8 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 
 namespace Lykke.Tools.AssetMigrator
 {
-    public interface IMigrator
+    public interface ICopier
     {
         Task RunAsync();
     }

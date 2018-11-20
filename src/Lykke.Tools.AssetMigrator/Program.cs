@@ -49,16 +49,31 @@ namespace Lykke.Tools.AssetMigrator
                 );
 
             serviceCollection
-                .AddSingleton<ICommandLineArguments, CommandLineArguments>();
-            
-            serviceCollection
-                .AddSingleton<ICommandLineOptions, CommandLineOptions>();
-            
-            serviceCollection
-                .AddSingleton<IMigrator, Migrator>();
+                .AddSingleton<IBurnCommand, BurnCommand>();
 
             serviceCollection
+                .AddSingleton<IBurner, Burner>();
+            
+            serviceCollection
+                .AddSingleton<IBurnOptions, BurnOptions>();
+            
+            serviceCollection
+                .AddSingleton<ICopier, Copier>();
+            
+            serviceCollection
+                .AddSingleton<ICopyCommand, CopyCommand>();
+            
+            serviceCollection
+                .AddSingleton<IMigrateOptions, MigrateOptions>();
+            
+            serviceCollection
                 .AddSingleton<IRootCommand, RootCommand>();
+
+            serviceCollection
+                .AddSingleton<ITransferCommand, TransferCommand>();
+            
+            serviceCollection
+                .AddSingleton<ITransferer, Transferer>();
             
             return serviceCollection;
         }
