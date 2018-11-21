@@ -26,6 +26,17 @@ namespace Lykke.Tools.AssetMigrator.Implementations
         }
 
 
+        public Task<BalanceEntity> TryGetBalanceAsync(
+            string clientId,
+            string assetId)
+        {
+            return _balances.GetDataAsync
+            (
+                partition: clientId,
+                row: assetId
+            );
+        }
+        
         public Task<(IEnumerable<BalanceEntity> balances, string continuationToken)> GetBalancesAsync(
             string assetId,
             int take,

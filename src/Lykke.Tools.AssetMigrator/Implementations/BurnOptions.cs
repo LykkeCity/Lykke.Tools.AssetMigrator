@@ -7,15 +7,23 @@ namespace Lykke.Tools.AssetMigrator.Implementations
     public class BurnOptions : IBurnOptions
     {
         private bool _optionsConfigured;
-        
+
+        private CommandOption _assetAccuracy;
         private CommandOption _assetId;
+        private CommandOption _balancesConnectionString;
         private CommandOption _clientId;
         private CommandOption _help;
         private CommandOption _meEndPoint;
 
+        public uint AssetAccuracy
+            => uint.Parse(_assetAccuracy.Value());
+        
         public string AssetId
             => _assetId.Value();
 
+        public string BalancesConnectionString
+            => _balancesConnectionString.Value();
+        
         public string ClientId
             => _clientId.Value();
         
@@ -29,10 +37,24 @@ namespace Lykke.Tools.AssetMigrator.Implementations
         public void Configure(
             CommandLineApplication app)
         {
+            _assetAccuracy = app.Option
+            (
+                "--asset-accuracy",
+                "Asset accuracy",
+                CommandOptionType.SingleValue
+            );
+            
             _assetId = app.Option
             (
                 "--asset-id",
                 "Asset id",
+                CommandOptionType.SingleValue
+            );
+            
+            _balancesConnectionString = app.Option
+            (
+                "--balances-conn-string",
+                "Lykke.Service.Balances connection string",
                 CommandOptionType.SingleValue
             );
             
@@ -67,9 +89,29 @@ namespace Lykke.Tools.AssetMigrator.Implementations
 
             var optionsAreValid = true;
             
+            if (!_assetAccuracy.HasValue())
+            {
+                Console.WriteLine("Asset accuracy is not provided");
+                
+                optionsAreValid = false;
+            }
+            else if (!uint.TryParse(_assetAccuracy.Value(), out _))
+            {
+                Console.WriteLine("Asset accuracy should be greater or equal to zero");
+                
+                optionsAreValid = false;
+            }
+            
             if (!_assetId.HasValue())
             {
                 Console.WriteLine("Asset id is not provided");
+                
+                optionsAreValid = false;
+            }
+            
+            if (!_balancesConnectionString.HasValue())
+            {
+                Console.WriteLine("Balances connection string is not provided");
                 
                 optionsAreValid = false;
             }

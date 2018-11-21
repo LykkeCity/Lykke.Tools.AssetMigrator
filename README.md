@@ -17,23 +17,26 @@
 
 **Burn options**:
 
+> --asset-accuracy - Asset accuracy  
 > --asset-id - Asset id  
+> --balances-conn-string - Lykke.Service.Balances connection string  
 > --client-id - Client id  
 > -h|--help - Show help information  
 > --me-endpoint - ME endpoint (host:port)
 
+
 **Copy and transfer options**
 
-> --balances-conn-string  Lykke.Service.Balances connection string  
-> -h|--help               Show help information  
-> --me-endpoint           ME endpoint (host:port)  
-> --operations-url        Lykke.Service.OperationsRepository url  
-> --from                  Source asset id  
-> --accuracy              Target asset accuracy  
-> --to                    Target asset id  
-> --migration-id          Migration id (guid, optional)  
-> --migration-message     Migration message (optional)  
-> --multiplier            Multiplier (greater or equal to one, optional)  
+> --balances-conn-string - Lykke.Service.Balances connection string  
+> -h|--help - Show help information  
+> --me-endpoint - ME endpoint (host:port)  
+> --operations-url - Lykke.Service.OperationsRepository url  
+> --from - Source asset id  
+> --accuracy - Target asset accuracy  
+> --to - Target asset id  
+> --migration-id - Migration id (guid, optional)  
+> --migration-message - Migration message (optional)  
+> --multiplier - Multiplier (greater or equal to one, optional)  
 
 ### Usage example
 

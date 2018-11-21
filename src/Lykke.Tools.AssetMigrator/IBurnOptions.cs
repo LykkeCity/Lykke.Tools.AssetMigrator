@@ -5,7 +5,11 @@ namespace Lykke.Tools.AssetMigrator
 {
     public interface IBurnOptions
     {
+        uint AssetAccuracy { get; }
+        
         string AssetId { get; }
+        
+        string BalancesConnectionString { get; }
         
         string ClientId { get; }
         
