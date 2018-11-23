@@ -3,43 +3,37 @@ using System.Threading.Tasks;
 using Common;
 using Common.Log;
 using Lykke.Common.Log;
-using Lykke.Logs;
+using Lykke.MatchingEngine.Connector.Abstractions.Services;
 using Lykke.MatchingEngine.Connector.Models.Api;
-using Lykke.MatchingEngine.Connector.Services;
+
 
 namespace Lykke.Tools.AssetMigrator.Implementations
 {
-    public class Burner : IBurner
+    public class BurnStrategy : IBurnStrategy
     {
+        private readonly IBalanceRepository _balanceRepository;
         private readonly ILog _log;
-        private readonly ILogFactory _logFactory;
+        private readonly IMatchingEngineClient _meClient;
         private readonly IBurnOptions _options;
 
-        public Burner(
+        public BurnStrategy(
+            IBalanceRepository balanceRepository,
             IBurnOptions options,
-            ILogFactory logFactory)
+            ILogFactory logFactory,
+            IMatchingEngineClient meClient)
         {
+            _balanceRepository = balanceRepository;
             _log = logFactory.CreateLog(this);
-            _logFactory = logFactory;
+            _meClient = meClient;
             _options = options;
         }
 
         
-        public async Task RunAsync()
+        public async Task ExecuteAsync()
         {
             _log.Info($"Balance burning started for client {_options.ClientId}");
             
-            var meClient = new TcpMatchingEngineClient(_options.MEEndPoint, EmptyLogFactory.Instance);
-
-            var balanceRepository = new BalanceRepository
-            (
-                _options.BalancesConnectionString,
-                _logFactory
-            );
-            
-            meClient.Start();
-
-            var balance = await balanceRepository.TryGetBalanceAsync
+            var balance = await _balanceRepository.TryGetBalanceAsync
             (
                 clientId: _options.ClientId,
                 assetId: _options.AssetId
@@ -51,7 +45,7 @@ namespace Lykke.Tools.AssetMigrator.Implementations
             
             if (burnAmount < 0)
             {
-                var burnResult = await meClient.CashInOutAsync
+                var burnResult = await _meClient.CashInOutAsync
                 (
                     id: Guid.NewGuid().ToString(),
                     clientId: _options.ClientId,

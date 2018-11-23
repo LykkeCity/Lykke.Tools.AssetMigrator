@@ -2,8 +2,8 @@ using System.Threading.Tasks;
 
 namespace Lykke.Tools.AssetMigrator
 {
-    public interface ICopier
+    public interface IStrategy
     {
-        Task RunAsync();
+        Task ExecuteAsync();
     }
 }

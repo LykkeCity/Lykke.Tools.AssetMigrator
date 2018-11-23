@@ -4,12 +4,13 @@ using AzureStorage;
 using AzureStorage.Tables;
 using Lykke.Common.Log;
 using Lykke.SettingsReader.ReloadingManager;
+using Lykke.Tools.AssetMigrator.Entities;
 using Microsoft.WindowsAzure.Storage.Table;
 
 
 namespace Lykke.Tools.AssetMigrator.Implementations
 {
-    internal sealed class BalanceRepository
+    internal sealed class BalanceRepository : IBalanceRepository
     {
         private readonly INoSQLTableStorage<BalanceEntity> _balances;
 
@@ -24,7 +25,6 @@ namespace Lykke.Tools.AssetMigrator.Implementations
                 logFactory: logFactory
             );
         }
-
 
         public Task<BalanceEntity> TryGetBalanceAsync(
             string clientId,

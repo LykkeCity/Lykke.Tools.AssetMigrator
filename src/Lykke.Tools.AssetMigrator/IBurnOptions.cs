@@ -1,9 +1,9 @@
 using System.Net;
-using Microsoft.Extensions.CommandLineUtils;
+
 
 namespace Lykke.Tools.AssetMigrator
 {
-    public interface IBurnOptions
+    public interface IBurnOptions : IOptions
     {
         uint AssetAccuracy { get; }
         
@@ -14,13 +14,5 @@ namespace Lykke.Tools.AssetMigrator
         string ClientId { get; }
         
         IPEndPoint MEEndPoint { get; }
-        
-        bool ShowHelp { get; }
-        
-        
-        void Configure(
-            CommandLineApplication app);
-        
-        bool Validate();
     }
 }

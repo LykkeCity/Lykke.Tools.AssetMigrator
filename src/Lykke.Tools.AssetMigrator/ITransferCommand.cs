@@ -1,10 +1,7 @@
-using Microsoft.Extensions.CommandLineUtils;
-
 namespace Lykke.Tools.AssetMigrator
 {
-    public interface ITransferCommand
+    public interface ITransferCommand : IChildCommand
     {
-        void Configure(
-            CommandLineApplication app);
+        
     }
 }

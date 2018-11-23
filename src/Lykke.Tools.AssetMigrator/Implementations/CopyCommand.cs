@@ -1,62 +1,30 @@
-using System;
-using System.Threading.Tasks;
-using Common.Log;
 using Lykke.Common.Log;
-using Microsoft.Extensions.CommandLineUtils;
+using Lykke.Tools.AssetMigrator.Extensions;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Lykke.Tools.AssetMigrator.Implementations
 {
-    public class CopyCommand : ICopyCommand
+    public class CopyCommand : CommandBase<ICopyStrategy, IMigrateOptions>, ICopyCommand
     {
-        private readonly ICopier _copier;
-        private readonly ILog _log;
-        private readonly IMigrateOptions _options;
-
-        
         public CopyCommand(
-            ICopier copier,
             ILogFactory logFactory,
-            IMigrateOptions options)
+            IMigrateOptions options) : 
+            
+            base("copy", logFactory, options)
         {
-            _copier = copier;
-            _log = logFactory.CreateLog(this);
-            _options = options;
+            
         }
-
         
-        public void Configure(
-            CommandLineApplication app)
+        protected override IServiceCollection ConfigureServices()
         {
-            app.Command("copy", cmd =>
-            {
-                _options.Configure(cmd);
-                
-                cmd.OnExecute(() => ExecuteAsync(cmd));
-            });
-        }
-
-        private async Task<int> ExecuteAsync(
-            CommandLineApplication cmd)
-        {
-            try
-            {
-                if (_options.ShowHelp || !_options.Validate())
-                {
-                    cmd.ShowHelp();
-                }
-                else
-                {
-                    await _copier.RunAsync();
-                }
-
-                return 0;
-            }
-            catch (Exception e)
-            {
-                _log.Critical(e, "Copying failed.");
-                
-                return 1;
-            }
+            return new ServiceCollection()
+                .AddSingleton(LogFactory)
+                .AddSingleton(Options)
+                .AddBalanceRepository(Options.BalancesConnectionString, LogFactory)
+                .AddMatchingEngineClient(Options.MEEndPoint)
+                .AddMigrationRepository(Options.BalancesConnectionString, Options.MigrationId, LogFactory)
+                .AddSingleton<IBalanceService, BalanceService>()
+                .AddSingleton<ICopyStrategy, CopyStrategy>();
         }
     }
 }

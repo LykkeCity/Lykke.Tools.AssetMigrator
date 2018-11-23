@@ -1,6 +1,6 @@
 namespace Lykke.Tools.AssetMigrator
 {
-    public interface IBurnCommand : IChildCommand
+    public interface ICopyStrategy : IStrategy
     {
         
     }

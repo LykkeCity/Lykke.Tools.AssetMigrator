@@ -1,45 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Common;
 using Common.Log;
 using JetBrains.Annotations;
 using Lykke.Common.Log;
-using Lykke.Logs;
-using Lykke.MatchingEngine.Connector.Models.Api;
-using Lykke.MatchingEngine.Connector.Services;
-using Lykke.Service.OperationsRepository.AutorestClient.Models;
-using Lykke.Service.OperationsRepository.Client.CashOperations;
+using Lykke.Tools.AssetMigrator.Entities;
 
 
 namespace Lykke.Tools.AssetMigrator.Implementations
 {
     [UsedImplicitly]
-    public abstract class MigratorBase
+    public class BalanceService : IBalanceService
     {
+        private readonly IBalanceRepository _balanceRepository;
         private readonly ILog _log;
-        private readonly ILogFactory _logFactory;
         private readonly IMigrateOptions _options;
 
         
-        protected MigratorBase(
+        public BalanceService(
+            IBalanceRepository balanceRepository,
             ILogFactory logFactory,
             IMigrateOptions options)
         {
+            _balanceRepository = balanceRepository;
             _log = logFactory.CreateLog(this);
-            _logFactory = logFactory;
             _options = options;
         }
 
-        protected async Task<BalanceEntity[]> GetBalancesAsync()
+        public async Task<BalanceEntity[]> GetBalancesAsync()
         {
-            var balanceRepository = new BalanceRepository
-            (
-                _options.BalancesConnectionString,
-                _logFactory
-            );
-            
             var balances = new List<BalanceEntity>();
 
             string continuationToken = null;
@@ -48,7 +37,7 @@ namespace Lykke.Tools.AssetMigrator.Implementations
             {
                 IEnumerable<BalanceEntity> balancesBatch;
                 
-                (balancesBatch, continuationToken) = await balanceRepository.GetBalancesAsync
+                (balancesBatch, continuationToken) = await _balanceRepository.GetBalancesAsync
                 (
                     _options.SourceAssetId,
                     100,
