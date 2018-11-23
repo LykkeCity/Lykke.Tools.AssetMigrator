@@ -103,14 +103,14 @@ namespace Lykke.Tools.AssetMigrator.Implementations
                     }
                     else
                     {
-                        _log.Warning($"CashIn for client [{balance.ClientId}] completed with [{cashInResult.Status.ToString()}] status.");
+                        _log.Warning($"CashIn [{cashInAmount}] for client [{balance.ClientId}] completed with [{cashInResult.Status.ToString()}] status.");
                     }
                     
                     _log.Info($"Copied {i + 1} of {balances.Count} balances.");
                 }
                 catch (Exception e)
                 {
-                    _log.Error(e, $"Failed to copy balance for client [{balance.ClientId}].");
+                    _log.Error(e, $"Failed to copy balance [{balance.Balance}] for client [{balance.ClientId}].");
                 }
             }
         }

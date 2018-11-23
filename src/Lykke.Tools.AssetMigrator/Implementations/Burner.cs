@@ -27,7 +27,7 @@ namespace Lykke.Tools.AssetMigrator.Implementations
         
         public async Task RunAsync()
         {
-            _log.Info("Balance burning started");
+            _log.Info($"Balance burning started for client {_options.ClientId}");
             
             var meClient = new TcpMatchingEngineClient(_options.MEEndPoint, EmptyLogFactory.Instance);
 
@@ -61,15 +61,18 @@ namespace Lykke.Tools.AssetMigrator.Implementations
 
                 if (burnResult.Status != MeStatusCodes.Ok)
                 {
-                    _log.Warning($"CashOut for client [{_options.ClientId}] completed with [{burnResult.Status.ToString()}] status.");
+                    _log.Warning($"CashOut [{burnAmount}] for client [{_options.ClientId}] completed with [{burnResult.Status.ToString()}] status.");
+                }
+                else
+                {
+                    // ReSharper disable once PossibleNullReferenceException
+                    _log.Info($"Balance [{balance.Balance}] burning completed");
                 }
             }
             else
             {
                 _log.Warning("Balance not found");
             }
-            
-            _log.Info("Balance burning completed");
         }
     }
 }
