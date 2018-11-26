@@ -7,7 +7,7 @@ using Microsoft.Extensions.CommandLineUtils;
 namespace Lykke.Tools.AssetMigrator.Implementations
 {
     [UsedImplicitly]
-    public sealed class CommandLineOptions : ICommandLineOptions
+    public sealed class MigrateOptions : IMigrateOptions
     {
         private bool _optionsConfigured;
         
@@ -15,7 +15,6 @@ namespace Lykke.Tools.AssetMigrator.Implementations
         private CommandOption _help;
         private CommandOption _meEndPoint;
         private CommandOption _migrationId;
-        private CommandOption _migrationMessage;
         private CommandOption _multiplier;
         private CommandOption _operationsUrl;
         private CommandOption _sourceAssetId;
@@ -34,9 +33,6 @@ namespace Lykke.Tools.AssetMigrator.Implementations
 
         public Guid MigrationId
             => _migrationId.HasValue() ? Guid.Parse(_migrationId.Value()) : Guid.Empty;
-
-        public string MigrationMessage
-            => _migrationMessage.HasValue() ? _migrationMessage.Value() : "Asset migration";
         
         public uint Multiplier
             => _multiplier.HasValue() ? uint.Parse(_multiplier.Value()) : 1;
@@ -111,13 +107,6 @@ namespace Lykke.Tools.AssetMigrator.Implementations
                 CommandOptionType.SingleValue
             );
 
-            _migrationMessage = app.Option
-            (
-                "--migration-message",
-                "Migration message (optional)",
-                CommandOptionType.SingleValue
-            );
-            
             _multiplier = app.Option
             (
                 "--multiplier",

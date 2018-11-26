@@ -12,31 +12,32 @@ namespace Lykke.Tools.AssetMigrator.Implementations
     public sealed class RootCommand : IRootCommand
     {
         private readonly CommandLineApplication _app;
-        private readonly ICommandLineArguments _arguments;
+        private readonly IBurnCommand _burnCommand;
+        private readonly ICopyCommand _copyCommand;
         private readonly ILog _log;
-        private readonly IMigrator _migrator;
-        private readonly ICommandLineOptions _options;
+        private readonly ITransferCommand _transferCommand;
 
         
         public RootCommand(
-            ICommandLineArguments arguments,
+            IBurnCommand burnCommand,
+            ICopyCommand copyCommand,
             ILogFactory logFactory,
-            IMigrator migrator,
-            ICommandLineOptions options)
+            ITransferCommand transferCommand)
         {
             _app = new CommandLineApplication(throwOnUnexpectedArg: false);
-            _arguments = arguments;
+            _burnCommand = burnCommand;
+            _copyCommand = copyCommand;
             _log = logFactory.CreateLog(this);
-            _migrator = migrator;
-            _options = options;
+            _transferCommand = transferCommand;
         }
 
 
         public CommandLineApplication Configure()
         {
-            _arguments.Configure(_app);
-            _options.Configure(_app);
-
+            _burnCommand.Configure(_app);
+            _copyCommand.Configure(_app);
+            _transferCommand.Configure(_app);
+            
             _app.OnExecute(() => ExecuteAsync());
             
             _app.VersionOption("--version", GetVersion);
@@ -44,26 +45,19 @@ namespace Lykke.Tools.AssetMigrator.Implementations
             return _app;
         }
 
-        private async Task<int> ExecuteAsync()
+        private Task<int> ExecuteAsync()
         {
             try
             {
-                if (_options.ShowHelp || !_arguments.Validate() || !_options.Validate())
-                {
-                    _app.ShowHelp();
-                }
-                else
-                {
-                    await _migrator.RunAsync();
-                }
+                _app.ShowHelp();
 
-                return 0;
+                return Task.FromResult(0);
             }
             catch (Exception e)
             {
-                _log.Critical(e, "Migration failed.");
-
-                return 1;
+                _log.Critical(e, "Execution failed.");
+                
+                return Task.FromResult(1);
             }
         }
 

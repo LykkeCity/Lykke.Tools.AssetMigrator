@@ -4,15 +4,16 @@ using AzureStorage;
 using AzureStorage.Tables;
 using Lykke.Common.Log;
 using Lykke.SettingsReader.ReloadingManager;
+using Lykke.Tools.AssetMigrator.Entities;
 
 namespace Lykke.Tools.AssetMigrator.Implementations
 {
-    internal sealed class MigrationsRepository
+    internal sealed class MigrationRepository : IMigrationRepository
     {
         private readonly INoSQLTableStorage<MigrationEntity> _migrations;
         
         
-        public MigrationsRepository(
+        public MigrationRepository(
             string connectionString,
             ILogFactory logFactory,
             Guid migrationId)

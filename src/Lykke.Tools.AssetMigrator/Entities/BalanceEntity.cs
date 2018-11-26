@@ -1,7 +1,7 @@
 ﻿using JetBrains.Annotations;
 using Lykke.AzureStorage.Tables;
 
-namespace Lykke.Tools.AssetMigrator.Implementations
+namespace Lykke.Tools.AssetMigrator.Entities
 {
     public class BalanceEntity : AzureTableEntity
     {
