@@ -12,19 +12,29 @@ namespace Lykke.Tools.AssetMigrator.Implementations
     [UsedImplicitly]
     public class BalanceService : IBalanceService
     {
+        private readonly string _assetId;
         private readonly IBalanceRepository _balanceRepository;
         private readonly ILog _log;
-        private readonly IMigrateOptions _options;
 
+
+        public BalanceService(
+            IBalanceRepository balanceRepository,
+            ILogFactory logFactory,
+            IBurnOptions options)
+        {
+            _assetId = options.AssetId;
+            _balanceRepository = balanceRepository;
+            _log = logFactory.CreateLog(this);
+        }
         
         public BalanceService(
             IBalanceRepository balanceRepository,
             ILogFactory logFactory,
             IMigrateOptions options)
         {
+            _assetId = options.SourceAssetId;
             _balanceRepository = balanceRepository;
             _log = logFactory.CreateLog(this);
-            _options = options;
         }
 
         public async Task<BalanceEntity[]> GetBalancesAsync()
@@ -39,7 +49,7 @@ namespace Lykke.Tools.AssetMigrator.Implementations
                 
                 (balancesBatch, continuationToken) = await _balanceRepository.GetBalancesAsync
                 (
-                    _options.SourceAssetId,
+                    _assetId,
                     100,
                     continuationToken
                 );

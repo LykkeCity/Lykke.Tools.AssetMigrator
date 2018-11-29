@@ -11,7 +11,7 @@
 
 **Commands:**
 
-> burn-balance      
+> burn      
 > copy      
 > transfer  
 
@@ -20,7 +20,6 @@
 > --asset-accuracy - Asset accuracy  
 > --asset-id - Asset id  
 > --balances-conn-string - Lykke.Service.Balances connection string  
-> --client-id - Client id  
 > -h|--help - Show help information  
 > --me-endpoint - ME endpoint (host:port)
 
