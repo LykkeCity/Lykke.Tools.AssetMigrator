@@ -11,8 +11,6 @@ namespace Lykke.Tools.AssetMigrator
         
         string BalancesConnectionString { get; }
         
-        string ClientId { get; }
-        
         IPEndPoint MEEndPoint { get; }
     }
 }

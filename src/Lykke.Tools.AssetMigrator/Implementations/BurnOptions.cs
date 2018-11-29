@@ -11,7 +11,6 @@ namespace Lykke.Tools.AssetMigrator.Implementations
         private CommandOption _assetAccuracy;
         private CommandOption _assetId;
         private CommandOption _balancesConnectionString;
-        private CommandOption _clientId;
         private CommandOption _help;
         private CommandOption _meEndPoint;
 
@@ -23,10 +22,7 @@ namespace Lykke.Tools.AssetMigrator.Implementations
 
         public string BalancesConnectionString
             => _balancesConnectionString.Value();
-        
-        public string ClientId
-            => _clientId.Value();
-        
+
         public IPEndPoint MEEndPoint
             => GetMEEndPoint();
         
@@ -57,14 +53,7 @@ namespace Lykke.Tools.AssetMigrator.Implementations
                 "Lykke.Service.Balances connection string",
                 CommandOptionType.SingleValue
             );
-            
-            _clientId = app.Option
-            (
-                "--client-id",
-                "Client id",
-                CommandOptionType.SingleValue
-            );
-            
+
             _help = app.HelpOption
             (
                 "-h|--help"
@@ -115,14 +104,7 @@ namespace Lykke.Tools.AssetMigrator.Implementations
                 
                 optionsAreValid = false;
             }
-            
-            if (!_clientId.HasValue())
-            {
-                Console.WriteLine("Client id is not provided");
-                
-                optionsAreValid = false;
-            }
-            
+
             if (!_meEndPoint.HasValue())
             {
                 Console.WriteLine("ME endpoint is not provided");

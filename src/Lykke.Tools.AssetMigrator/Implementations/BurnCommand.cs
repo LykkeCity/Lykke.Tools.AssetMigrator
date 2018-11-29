@@ -11,7 +11,7 @@ namespace Lykke.Tools.AssetMigrator.Implementations
             ILogFactory logFactory,
             IBurnOptions options) : 
             
-            base("burn-balance", logFactory, options)
+            base("burn", logFactory, options)
         {
             
         }
@@ -23,6 +23,7 @@ namespace Lykke.Tools.AssetMigrator.Implementations
                 .AddSingleton(Options)
                 .AddBalanceRepository(Options.BalancesConnectionString, LogFactory)
                 .AddMatchingEngineClient(Options.MEEndPoint)
+                .AddSingleton<IBalanceService, BalanceService>()
                 .AddSingleton<IBurnStrategy, BurnStrategy>();
         }
     }
