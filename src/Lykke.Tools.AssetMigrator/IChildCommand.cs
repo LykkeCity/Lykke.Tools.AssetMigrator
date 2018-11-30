@@ -2,14 +2,9 @@ using Microsoft.Extensions.CommandLineUtils;
 
 namespace Lykke.Tools.AssetMigrator
 {
-    public interface ICommandLineArguments
+    public interface IChildCommand
     {
-        MigrationMode Mode { get; }
-
-
         void Configure(
             CommandLineApplication app);
-        
-        bool Validate();
     }
 }
