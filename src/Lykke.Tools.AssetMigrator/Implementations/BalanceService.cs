@@ -27,7 +27,7 @@ namespace Lykke.Tools.AssetMigrator.Implementations
             _log = logFactory.CreateLog(this);
         }
         
-        public BalanceService(
+        private BalanceService(
             IBalanceRepository balanceRepository,
             ILogFactory logFactory,
             IMigrateOptions options)
@@ -35,6 +35,26 @@ namespace Lykke.Tools.AssetMigrator.Implementations
             _assetId = options.SourceAssetId;
             _balanceRepository = balanceRepository;
             _log = logFactory.CreateLog(this);
+        }
+        
+        public BalanceService(
+            IBalanceRepository balanceRepository,
+            ILogFactory logFactory,
+            ICopyOptions options)
+            
+            : this(balanceRepository, logFactory, (IMigrateOptions) options)
+        {
+            
+        }
+        
+        public BalanceService(
+            IBalanceRepository balanceRepository,
+            ILogFactory logFactory,
+            ITransferOptions options)
+        
+            : this(balanceRepository, logFactory, (IMigrateOptions) options)
+        {
+            
         }
 
         public async Task<BalanceEntity[]> GetBalancesAsync()
