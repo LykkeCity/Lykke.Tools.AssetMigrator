@@ -52,7 +52,10 @@ namespace Lykke.Tools.AssetMigrator
                 .AddSingleton<IBurnOptions, BurnOptions>();
             
             serviceCollection
-                .AddSingleton<IMigrateOptions, MigrateOptions>();
+                .AddSingleton<ICopyOptions, CopyOptions>();
+            
+            serviceCollection
+                .AddSingleton<ITransferOptions, TransferOptions>();
             
             serviceCollection
                 .AddSingleton<IRootCommand, RootCommand>();
