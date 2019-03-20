@@ -4,11 +4,11 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Lykke.Tools.AssetMigrator.Implementations
 {
-    public class TransferCommand : CommandBase<ITransferStrategy, IMigrateOptions>, ITransferCommand
+    public class TransferCommand : CommandBase<ITransferStrategy, ITransferOptions>, ITransferCommand
     {
         public TransferCommand(
             ILogFactory logFactory,
-            IMigrateOptions options) 
+            ITransferOptions options) 
             
             : base("transfer", logFactory, options)
         {
