@@ -17,14 +17,14 @@ namespace Lykke.Tools.AssetMigrator.Implementations
         private readonly ILog _log;
         private readonly IMatchingEngineClient _meClient;
         private readonly IMigrationRepository _migrationRepository;
-        private readonly IMigrateOptions _options;
+        private readonly ICopyOptions _options;
         
         public CopyStrategy(
             IBalanceService balanceService,
             ILogFactory logFactory,
             IMatchingEngineClient meClient,
             IMigrationRepository migrationRepository,
-            IMigrateOptions options)
+            ICopyOptions options)
         {
             _balanceService = balanceService;
             _log = logFactory.CreateLog(this);
