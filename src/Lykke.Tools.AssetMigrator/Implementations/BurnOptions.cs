@@ -1,5 +1,6 @@
-using System;
+﻿using System;
 using System.Net;
+using Lykke.Tools.AssetMigrator.Extensions;
 using Microsoft.Extensions.CommandLineUtils;
 
 namespace Lykke.Tools.AssetMigrator.Implementations
@@ -24,7 +25,7 @@ namespace Lykke.Tools.AssetMigrator.Implementations
             => _balancesConnectionString.Value();
 
         public IPEndPoint MEEndPoint
-            => GetMEEndPoint();
+            => _meEndPoint.GetIPEndPoint();
         
         public bool ShowHelp
             => _help.HasValue();
@@ -113,22 +114,6 @@ namespace Lykke.Tools.AssetMigrator.Implementations
             }
 
             return optionsAreValid;
-        }
-        
-        private IPEndPoint GetMEEndPoint()
-        {
-            var hostAndPort = _meEndPoint.Value().Split(":");
-            
-            if (IPAddress.TryParse(hostAndPort[0], out var ipAddress))
-            {
-                return new IPEndPoint(ipAddress, int.Parse(hostAndPort[1]));
-            }
-            else
-            {
-                var addresses = Dns.GetHostAddressesAsync(hostAndPort[0]).Result;
-            
-                return new IPEndPoint(addresses[0], int.Parse(hostAndPort[1]));
-            }
         }
     }
 }

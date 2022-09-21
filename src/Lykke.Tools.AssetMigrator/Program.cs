@@ -56,6 +56,9 @@ namespace Lykke.Tools.AssetMigrator
             
             serviceCollection
                 .AddSingleton<ITransferOptions, TransferOptions>();
+
+            serviceCollection
+                .AddSingleton<ICreditOptions, CreditOptions>();
             
             serviceCollection
                 .AddSingleton<IRootCommand, RootCommand>();
@@ -68,6 +71,9 @@ namespace Lykke.Tools.AssetMigrator
             
             serviceCollection
                 .AddSingleton<ITransferCommand, TransferCommand>();
+
+            serviceCollection
+                .AddSingleton<ICreditCommand, CreditCommand>();
             
             return serviceCollection;
         }
