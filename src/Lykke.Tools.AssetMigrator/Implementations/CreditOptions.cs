@@ -40,7 +40,7 @@ namespace Lykke.Tools.AssetMigrator.Implementations
             _creditPlanCsvPath = app.Option
             (
                 "--credit-plan-csv-path",
-                "Path to the CSV file with the credit plan in format: wallet_id, asset_id, asset_accuracy, amount",
+                "Path to the CSV file with the credit plan in format: [wallet_id, asset_id, asset_accuracy, amount] and header",
                 CommandOptionType.SingleValue
             );            
 
@@ -54,7 +54,7 @@ namespace Lykke.Tools.AssetMigrator.Implementations
             _executionId = app.Option
             (
                 "--execution-id",
-                "Execution id (guid)",
+                "Unique execution id (guid)",
                 CommandOptionType.SingleValue
             );
 

@@ -13,21 +13,22 @@
 
 > burn      
 > copy      
-> transfer  
+> transfer
+> credit
 
 **Burn options**:
 
+> -h|--help - Show help information  
 > --asset-accuracy - Asset accuracy  
 > --asset-id - Asset id  
 > --balances-conn-string - Lykke.Service.Balances connection string  
-> -h|--help - Show help information  
 > --me-endpoint - ME endpoint (host:port)
 
 
 **Copy and transfer options**
 
-> --balances-conn-string - Lykke.Service.Balances connection string  
 > -h|--help - Show help information  
+> --balances-conn-string - Lykke.Service.Balances connection string  
 > --me-endpoint - ME endpoint (host:port)
 > --operations-url - Lykke.Service.OperationsRepository url    
 > --from - Source asset id  
@@ -35,6 +36,14 @@
 > --to - Target asset id  
 > --migration-id - Migration id (guid, optional)  
 > --multiplier - Multiplier (greater or equal to one, optional)  
+
+**Credit options**
+
+> -h|--help - Show help information  
+> --balances-conn-string - Lykke.Service.Balances connection string  
+> --me-endpoint - ME endpoint (host:port)
+> --execution-id - Unique execution id (guid)  
+> --credit-plan-csv-path - Path to the CSV file with the credit plan in format: [wallet_id, asset_id, asset_accuracy, amount] and header
 
 ### Usage example
 
