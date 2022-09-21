@@ -41,9 +41,9 @@
 
 > -h|--help - Show help information  
 > --balances-conn-string - Lykke.Service.Balances connection string  
-> --me-endpoint - ME endpoint (host:port) 
-> --execution-id - Unique execution id (guid)
-> --credit-plan-csv-path - Path to the CSV file with the credit plan in format: [wallet_id, asset_id, asset_accuracy, amount] and header
+> --me-endpoint - ME endpoint (host:port)  
+> --execution-id - Unique execution id (guid)   
+> --credit-plan-csv-path - Path to the CSV file with the credit plan in format: [wallet_id, asset_id, asset_accuracy, amount] and header  
 
 ### Usage example
 
