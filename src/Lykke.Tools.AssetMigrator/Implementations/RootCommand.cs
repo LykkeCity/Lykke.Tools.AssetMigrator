@@ -16,19 +16,21 @@ namespace Lykke.Tools.AssetMigrator.Implementations
         private readonly ICopyCommand _copyCommand;
         private readonly ILog _log;
         private readonly ITransferCommand _transferCommand;
+        private readonly ICreditCommand _creditCommand;
 
-        
         public RootCommand(
             IBurnCommand burnCommand,
             ICopyCommand copyCommand,
             ILogFactory logFactory,
-            ITransferCommand transferCommand)
+            ITransferCommand transferCommand,
+            ICreditCommand creditCommand)
         {
             _app = new CommandLineApplication(throwOnUnexpectedArg: false);
             _burnCommand = burnCommand;
             _copyCommand = copyCommand;
             _log = logFactory.CreateLog(this);
             _transferCommand = transferCommand;
+            _creditCommand = creditCommand;
         }
 
 
@@ -37,6 +39,7 @@ namespace Lykke.Tools.AssetMigrator.Implementations
             _burnCommand.Configure(_app);
             _copyCommand.Configure(_app);
             _transferCommand.Configure(_app);
+            _creditCommand.Configure(_app);
             
             _app.OnExecute(() => ExecuteAsync());
             
